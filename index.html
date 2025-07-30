@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Tu Empresa Está Lista para IA? - Checklist Completo Danvilx</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%);
+            min-height: 100vh;
+        }
+        .quiz-container {
+            max-width: 800px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin: 2rem auto;
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .logo-svg {
+            width: 120px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+        .logo-text {
+            color: #8B5CF6;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .logo-subtitle {
+            color: #F97316;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-top: 0.25rem;
+        }
+        .answer-option {
+            background-color: #f3f4f6;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border: 2px solid transparent;
+        }
+        .answer-option:hover {
+            background-color: #e5e7eb;
+        }
+        .answer-option.selected {
+            border-color: #3b82f6;
+        }
+        .answer-option.correct {
+            background-color: #d1fae5;
+            border-color: #10b981;
+        }
+        .answer-option.partial {
+            background-color: #fef3c7;
+            border-color: #f59e0b;
+        }
+        .answer-option.incorrect {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+        }
+        .rationale {
+            font-size: 0.875rem;
+            color: #4b5563;
+            margin-top: 0.5rem;
+            padding-left: 0.5rem;
+            border-left: 3px solid #d1d5db;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+        }
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .progress-bar {
+            height: 20px;
+            transition: width 0.5s ease-in-out;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const quizData = {
+            questions: [
+                {
+                    question: "¿Tu empresa cuenta con datos digitalizados y centralizados relevantes para tus operaciones clave?",
+                    hint: "La IA se alimenta de datos. Piensa en cómo organizarías los ingredientes antes de cocinar.",
+                    answerOptions: [
+                        {
+                            text: "Sí, tenemos registros digitales centralizados en sistemas como ERP o CRM.",
+                            rationale: "Tener información digitalizada y accesible es el primer paso fundamental para cualquier iniciativa de IA.",
+                            points: 3
+                        },
+                        {
+                            text: "Parcialmente, algunos datos están digitalizados, pero muchos aún están en papel o dispersos.",
+                            rationale: "La IA requiere una base de datos consolidada. La información dispersa limita la capacidad de la IA.",
+                            points: 1
+                        },
+                        {
+                            text: "No, la mayoría de nuestros procesos y registros se gestionan manualmente.",
+                            rationale: "La falta de digitalización es una barrera significativa para la implementación de IA.",
+                            points: 0
+                        },
+                        {
+                            text: "No estoy seguro, la gestión de datos es compleja y no tenemos una visión clara.",
+                            rationale: "La incertidumbre sobre los datos indica una falta de preparación fundamental para la IA.",
+                            points: 0
+                        }
+                    ]
+                },
+                {
+                    question: "¿Existe un nivel adecuado de calidad y consistencia en los datos que tu empresa recolecta?",
+                    hint: "Un modelo de IA aprende de patrones. Si las entradas son caóticas, ¿cómo puede encontrar un patrón confiable?",
+                    answerOptions: [
+                        {
+                            text: "Sí, nuestros datos son consistentes, completos y con errores mínimos.",
+                            rationale: "La alta calidad de los datos es esencial para que los modelos de IA generen predicciones precisas.",
+                            points: 3
+                        },
+                        {
+                            text: "Generalmente sí, pero a veces hay inconsistencias o datos incompletos.",
+                            rationale: "Las inconsistencias pueden afectar la precisión y fiabilidad de los resultados de IA.",
+                            points: 2
+                        },
+                        {
+                            text: "No, nuestros datos suelen ser incompletos, inconsistentes o con muchos errores.",
+                            rationale: "Los datos de baja calidad son un obstáculo crítico para la IA.",
+                            points: 0
+                        },
+                        {
+                            text: "No lo hemos evaluado formalmente, pero sospechamos que hay problemas de calidad.",
+                            rationale: "La falta de evaluación formal es una señal de riesgo para cualquier iniciativa de IA.",
+                            points: 0
+                        }
+                    ]
+                },
+                {
+                    question: "¿Tu infraestructura tecnológica actual puede soportar el procesamiento de grandes volúmenes de datos?",
+                    hint: "La IA a menudo requiere mucha potencia. Piensa si tu motor actual es lo suficientemente fuerte.",
+                    answerOptions: [
+                        {
+                            text: "Sí, contamos con infraestructura robusta o servicios en la nube escalables.",
+                            rationale: "Una infraestructura robusta es fundamental para manejar las demandas de las soluciones de IA.",
+                            points: 3
+                        },
+                        {
+                            text: "Parcialmente, podría requerir actualizaciones o expansiones significativas.",
+                            rationale: "Una infraestructura limitada puede ser un cuello de botella para la implementación de IA.",
+                            points: 2
+                        },
+                        {
+                            text: "No, nuestra infraestructura es antigua y tiene limitaciones evidentes.",
+                            rationale: "Una infraestructura obsoleta no podrá soportar las necesidades de los algoritmos modernos.",
+                            points: 0
+                        },
+                        {
+                            text: "No estamos seguros de la capacidad real de nuestra infraestructura.",
+                            rationale: "La falta de conocimiento sobre la infraestructura indica riesgo de fallos inesperados.",
+                            points: 1
+                        }
+                    ]
+                },
+                {
+                    question: "¿Tu empresa asigna presupuesto anual a la innovación tecnológica que supera los $200,000 MXN?",
+                    hint: "La IA es una inversión. ¿Estás reservando fondos para nuevas exploraciones?",
+                    answerOptions: [
+                        {
+                            text: "Sí, tenemos un presupuesto dedicado para innovación y nuevas tecnologías.",
+                            rationale: "Un presupuesto específico para innovación es crucial para la implementación de IA.",
+                            points: 3
+                        },
+                        {
+                            text: "A veces, pero no es una partida fija o prioritaria en el presupuesto.",
+                            rationale: "La falta de un presupuesto fijo puede dificultar la ejecución de proyectos de IA.",
+                            points: 1
+                        },
+                        {
+                            text: "No, el presupuesto de TI apenas cubre el mantenimiento de sistemas existentes.",
+                            rationale: "Un presupuesto limitado es una barrera significativa para adoptar nuevas tecnologías.",
+                            points: 0
+                        },
+                        {
+                            text: "No hemos considerado un presupuesto específico para innovación tecnológica.",
+                            rationale: "La ausencia de presupuesto indica que la innovación no es una prioridad.",
+                            points: 0
+                        }
+                    ]
+                },
+                {
+                    question: "¿Tu equipo de TI tiene capacidad para integrar nuevas herramientas de IA con sistemas existentes?",
+                    hint: "La IA no vive sola. Piensa en cómo se conectaría con tus herramientas actuales.",
+                    answerOptions: [
+                        {
+                            text: "Sí, nuestro equipo tiene experiencia en integraciones complejas.",
+                            rationale: "La capacidad de integración es vital para que la IA opere de manera fluida.",
+                            points: 3
+                        },
+                        {
+                            text: "Parcialmente, las integraciones han sido un desafío en el pasado.",
+                            rationale: "Los desafíos previos pueden obstaculizar la implementación exitosa de IA.",
+                            points: 1
+                        },
+                        {
+                            text: "No, no tenemos experiencia ni recursos para este tipo de integraciones.",
+                            rationale: "La incapacidad de integración es un impedimento importante para la IA.",
+                            points: 0
+                        },
+                        {
+                            text: "No hemos evaluado esta capacidad, pero es una preocupación.",
+                            rationale: "La falta de evaluación es un riesgo para el éxito de proyectos de IA.",
+                            points: 0
+                        }
+                    ]
+                },
+                {
+                    question: "¿El liderazgo de tu empresa está comprometido con la adopción de nuevas tecnologías como la IA?",
+                    hint: "El apoyo desde arriba es como el viento en las velas. ¿Quién está al mando del barco de la innovación?",
+                    answerOptions: [
+                        {
+                            text: "Sí, la alta dirección es un fuerte impulsor de la IA y la digitalización.",
+                            rationale: "El compromiso activo del liderazgo es fundamental para el éxito de la IA.",
+                            points: 3
+                        },
+                        {
+                            text: "Algunos líderes sí, otros son más reacios o indiferentes.",
+                            rationale: "Un liderazgo dividido puede crear fricciones y ralentizar la adopción de la IA.",
+                            points: 1
+                        },
+                        {
+                            text: "No, la IA no es una prioridad clara para la alta dirección.",
+                            rationale: "Sin apoyo del liderazgo, las iniciativas de IA carecerán de dirección estratégica.",
+                            points: 0
+                        },
+                        {
+                            text: "La dirección está abierta, pero no ha tomado un rol activo en la promoción.",
+                            rationale: "La apertura es positiva, pero se necesita liderazgo activo para una adopción efectiva.",
+                            points: 1
+                        }
+                    ]
+                },
+                {
+                    question: "¿Tu empresa tiene una cultura que fomenta la experimentación y el aprendizaje continuo?",
+                    hint: "La IA transformará roles. ¿Tu equipo está listo para desaprender y reaprender?",
+                    answerOptions: [
+                        {
+                            text: "Sí, promovemos activamente la experimentación y el aprendizaje continuo.",
+                            rationale: "Una cultura abierta al cambio es crucial para la adopción exitosa de la IA.",
+                            points: 3
+                        },
+                        {
+                            text: "En cierta medida, pero el cambio a menudo encuentra resistencia.",
+                            rationale: "La resistencia al cambio puede ralentizar la implementación de la IA.",
+                            points: 1
+                        },
+                        {
+                            text: "No, nuestra cultura es más tradicional y resistente a las nuevas ideas.",
+                            rationale: "Una cultura resistente al cambio es un obstáculo importante para la IA.",
+                            points: 0
+                        },
+                        {
+                            text: "No lo hemos evaluado, pero el equipo parece cómodo con el status quo.",
+                            rationale: "La comodidad con el status quo puede ser un riesgo durante la implementación de IA.",
+                            points: 0
+                        }
+                    ]
+                },
+                {
+                    question: "¿Existen procesos de negocio claramente definidos y documentados en tu empresa?",
+                    hint: "La IA optimiza lo que ya existe. Si el camino no está claro, ¿cómo puede la IA encontrar el atajo?",
+                    answerOptions: [
+                        {
+                            text: "Sí, nuestros procesos están bien definidos, documentados y optimizados.",
+                            rationale: "Procesos claros permiten que la IA identifique patrones y optimice eficientemente.",
+                            points: 3
+                        },
+                        {
+                            text: "Parcialmente, algunos procesos están documentados, otros son informales.",
+                            rationale: "Los procesos informales pueden llevar a la automatización de ineficiencias.",
+                            points: 1
+                        },
+                        {
+                            text: "No, la mayoría de nuestros procesos son informales y dependen del conocimiento individual.",
+                            rationale: "La IA no puede optimizar lo que no está claramente estructurado.",
+                            points: 0
+                        },
+                        {
+                            text: "Estamos en proceso de documentar nuestros procesos, pero aún no están completos.",
+                            rationale: "La documentación en progreso es positiva, pero la IA se beneficia más de procesos completamente definidos.",
+                            points: 1
+                        }
+                    ]
+                },
+                {
+                    question: "¿Tu empresa está dispuesta a invertir en capacitación de personal para trabajar con IA?",
+                    hint: "La IA empodera a las personas. ¿Estás invirtiendo en el superpoder de tu equipo?",
+                    answerOptions: [
+                        {
+                            text: "Sí, tenemos planes y presupuesto para capacitar a nuestro personal en IA.",
+                            rationale: "La inversión en capacitación es clave para el éxito de la IA, ya que empodera a los empleados para colaborar con las nuevas tecnologías.",
+                            points: 3
+                        },
+                        {
+                            text: "Quizás, si vemos un ROI claro, pero no es una prioridad actual.",
+                            rationale: "La falta de una prioridad clara en la capacitación puede generar una brecha de habilidades, dificultando que los empleados aprovechen al máximo las herramientas de IA.",
+                            points: 1
+                        },
+                        {
+                            text: "No, esperamos que el personal aprenda por sí mismo o que la IA haga todo el trabajo.",
+                            rationale: "Esperar que el personal aprenda por sí mismo o que la IA sea una solución mágica es una estrategia arriesgada, ya que la IA requiere colaboración humana.",
+                            points: 0
+                        },
+                        {
+                            text: "No lo hemos considerado, pero es una buena idea.",
+                            rationale: "La falta de consideración de la capacitación es una oportunidad perdida, ya que la inversión en el desarrollo de habilidades del personal es crucial.",
+                            points: 1
+                        }
+                    ]
+                },
+                {
+                    question: "¿Tu empresa ha identificado problemas específicos que la IA podría resolver?",
+                    hint: "La IA es una herramienta. ¿Sabes qué clavo quieres martillar con ella?",
+                    answerOptions: [
+                        {
+                            text: "Sí, tenemos casos de uso claros y definidos para la aplicación de IA.",
+                            rationale: "Identificar problemas de negocio específicos es crucial, ya que la IA debe aplicarse para resolver desafíos reales o aprovechar oportunidades concretas.",
+                            points: 3
+                        },
+                        {
+                            text: "Tenemos algunas ideas generales, pero no problemas específicos.",
+                            rationale: "Las ideas generales sin problemas específicos pueden llevar a proyectos de IA sin dirección clara, lo que dificulta la medición del retorno de la inversión.",
+                            points: 1
+                        },
+                        {
+                            text: "No, solo queremos implementar IA porque está de moda.",
+                            rationale: "Implementar IA sin un objetivo de negocio claro es una estrategia arriesgada, ya que puede resultar en una inversión sin retorno.",
+                            points: 0
+                        },
+                        {
+                            text: "Estamos esperando que un consultor nos diga dónde aplicar la IA.",
+                            rationale: "Aunque los consultores pueden ayudar, la falta de una visión interna sobre los problemas de negocio puede limitar la efectividad de las soluciones de IA.",
+                            points: 2
+                        }
+                    ]
+                },
+                {
+                    question: "¿Tu empresa tiene métricas claras para medir el éxito de una iniciativa de IA?",
+                    hint: "¿Cómo sabrás si tu inversión en IA está dando frutos? Piensa en los números.",
+                    answerOptions: [
+                        {
+                            text: "Sí, hemos definido KPIs específicos para cada proyecto de IA.",
+                            rationale: "Definir métricas claras y cuantificables es esencial para medir el éxito de las iniciativas de IA, permitiendo evaluar el retorno de la inversión.",
+                            points: 3
+                        },
+                        {
+                            text: "Tenemos algunas métricas, pero no están directamente ligadas a la IA.",
+                            rationale: "Las métricas no directamente ligadas a la IA pueden dificultar la evaluación del impacto real de la tecnología.",
+                            points: 1
+                        },
+                        {
+                            text: "No, nos basamos más en la percepción general de mejora.",
+                            rationale: "Basarse en la percepción general sin métricas claras es un riesgo, ya que no permite una evaluación objetiva del éxito.",
+                            points: 0
+                        },
+                        {
+                            text: "No hemos pensado en cómo medir el éxito de la IA.",
+                            rationale: "La omisión de la definición de métricas es una oportunidad perdida, ya que sin ellas, es imposible saber si la inversión en IA está generando valor.",
+                            points: 0
+                        }
+                    ]
+                },
+                {
+                    question: "¿Tu empresa está dispuesta a iniciar con proyectos piloto de IA antes de una implementación completa?",
+                    hint: "Antes de construir un rascacielos, ¿no harías una maqueta o un prototipo?",
+                    answerOptions: [
+                        {
+                            text: "Sí, vemos el valor de los pilotos para aprender y validar antes de escalar.",
+                            rationale: "Los proyectos piloto permiten aprender, ajustar y demostrar el valor de la IA con menor riesgo, facilitando la validación de la solución.",
+                            points: 3
+                        },
+                        {
+                            text: "Preferimos ir directamente a la implementación completa para ver resultados rápidos.",
+                            rationale: "Ir directamente a una implementación completa sin un piloto puede aumentar significativamente los riesgos de fracaso.",
+                            points: 0
+                        },
+                        {
+                            text: "No hemos considerado los proyectos piloto, solo la implementación final.",
+                            rationale: "La omisión de los proyectos piloto es un riesgo, ya que se pierde la oportunidad de aprender y ajustar con menor inversión.",
+                            points: 0
+                        },
+                        {
+                            text: "No estamos seguros de cómo estructurar un proyecto piloto de IA.",
+                            rationale: "La falta de conocimiento sobre cómo estructurar un piloto puede ser un obstáculo, ya que los pilotos son una forma efectiva de probar soluciones de IA.",
+                            points: 1
+                        }
+                    ]
+                },
+                {
+                    question: "¿Tu empresa tiene un plan estratégico que incluye digitalización e innovación?",
+                    hint: "La IA no es un extra, es parte del ADN de tu futuro. ¿Está en tu mapa?",
+                    answerOptions: [
+                        {
+                            text: "Sí, la digitalización y la IA son parte integral de nuestra estrategia a largo plazo.",
+                            rationale: "Un plan estratégico que incluye la digitalización y la innovación es fundamental, ya que la IA debe ser parte de una visión empresarial más amplia.",
+                            points: 3
+                        },
+                        {
+                            text: "Tenemos un plan, pero la digitalización y la IA no son pilares principales.",
+                            rationale: "La falta de una prioridad clara en la digitalización puede limitar el potencial de la empresa para aprovechar las oportunidades de la tecnología.",
+                            points: 1
+                        },
+                        {
+                            text: "No, nuestro plan se enfoca en el crecimiento tradicional sin énfasis en tecnología.",
+                            rationale: "Un plan estratégico que no considera la disrupción tecnológica es un riesgo, ya que la IA está transformando rápidamente los mercados.",
+                            points: 0
+                        },
+                        {
+                            text: "No tenemos un plan estratégico formal a mediano o largo plazo.",
+                            rationale: "La ausencia de un plan estratégico formal es una debilidad significativa, ya que la empresa carece de una dirección clara para la inversión en tecnología.",
+                            points: 0
+                        }
+                    ]
+                },
+                {
+                    question: "¿Tu empresa cumple con las regulaciones mexicanas de protección de datos personales?",
+                    hint: "La IA usa datos. ¿Estás seguro de que los estás manejando legalmente en México?",
+                    answerOptions: [
+                        {
+                            text: "Sí, tenemos políticas y procesos estrictos para el cumplimiento de LFPDPPP e INAI.",
+                            rationale: "El cumplimiento riguroso de las regulaciones de protección de datos es fundamental, ya que la IA procesa grandes volúmenes de datos personales.",
+                            points: 3
+                        },
+                        {
+                            text: "Creemos que sí, pero no hemos realizado auditorías recientes.",
+                            rationale: "La falta de auditorías recientes puede dejar a la empresa vulnerable a incumplimientos no detectados, lo cual es riesgoso al manejar datos para IA.",
+                            points: 1
+                        },
+                        {
+                            text: "No estamos seguros, la normativa es compleja y no la hemos revisado a fondo.",
+                            rationale: "La incertidumbre sobre el cumplimiento normativo es un riesgo significativo, ya que el desconocimiento puede llevar a violaciones involuntarias.",
+                            points: 0
+                        },
+                        {
+                            text: "No, nuestra prioridad ha sido la operación, no el cumplimiento detallado de estas leyes.",
+                            rationale: "Priorizar la operación sobre el cumplimiento normativo es una estrategia peligrosa, ya que las leyes de protección de datos son obligatorias.",
+                            points: 0
+                        }
+                    ]
+                },
+                {
+                    question: "¿Tu empresa considera el impacto de la IA en los empleados y tiene un plan para gestionarlo?",
+                    hint: "La IA no solo cambia la tecnología, también cambia la forma en que las personas trabajan. ¿Estás pensando en ellos?",
+                    answerOptions: [
+                        {
+                            text: "Sí, evaluamos el impacto en roles y planificamos la transición y capacitación.",
+                            rationale: "Considerar el impacto de la IA es esencial para una implementación ética y exitosa, asegurando que los empleados sean apoyados en la transición.",
+                            points: 3
+                        },
+                        {
+                            text: "Lo hemos pensado, pero no hay un plan formal para gestionarlo.",
+                            rationale: "La falta de un plan formal para gestionar el impacto puede generar resistencia y descontento entre los empleados, dificultando la adopción de la IA.",
+                            points: 1
+                        },
+                        {
+                            text: "No, nos enfocamos en los beneficios para la empresa, no en el impacto en el personal.",
+                            rationale: "Ignorar el impacto en el personal es un riesgo, ya que la resistencia de los empleados puede socavar los beneficios de la IA.",
+                            points: 0
+                        },
+                        {
+                            text: "No estamos seguros de cómo evaluar o gestionar este tipo de impacto.",
+                            rationale: "La falta de conocimiento sobre cómo gestionar el impacto es una debilidad, ya que la IA puede transformar los roles y responsabilidades.",
+                            points: 1
+                        }
+                    ]
+                }
+            ]
+        };
+
+        const App = () => {
+            const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+            const [score, setScore] = useState(0);
+            const [showRationale, setShowRationale] = useState(false);
+            const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
+            const [quizCompleted, setQuizCompleted] = useState(false);
+
+            const currentQuestion = quizData.questions[currentQuestionIndex];
+
+            const handleAnswerClick = (index, points) => {
+                if (!showRationale) {
+                    setSelectedAnswerIndex(index);
+                    setShowRationale(true);
+                    setScore(score + points);
+                }
+            };
+
+            const handleNextQuestion = () => {
+                setShowRationale(false);
+                setSelectedAnswerIndex(null);
+                if (currentQuestionIndex < quizData.questions.length - 1) {
+                    setCurrentQuestionIndex(currentQuestionIndex + 1);
+                } else {
+                    setQuizCompleted(true);
+                }
+            };
+
+            const getPersonalizedMessage = (finalScore) => {
+                const maxPossibleScore = quizData.questions.length * 3; // 15 preguntas × 3 puntos = 45 puntos máximos
+                const percentage = Math.round((finalScore / maxPossibleScore) * 100);
+                
+                let message = {
+                    level: "Preparación Inicial Requerida",
+                    title: "¡FELICIDADES POR DAR EL PRIMER PASO!",
+                    diagnosis: "Tu empresa está en las etapas iniciales de preparación para IA.",
+                    meaning: [
+                        "Necesitas fortalecimiento en fundamentos tecnológicos",
+                        "Es el momento perfecto para establecer las bases correctas",
+                        "Tienes ventaja porque empezarás con las mejores prácticas"
+                    ],
+                    nextStep: "Agenda una CONSULTA ESTRATÉGICA GRATUITA donde analizaremos tu situación específica.",
+                    ctaButtonText: "AGENDAR CONSULTA GRATUITA AHORA",
+                    ctaButtonColor: "bg-green-500 hover:bg-green-600",
+                    ctaButtonLink: "mailto:daniel@danvilx.com?subject=Agendar%20Consulta%20Gratuita%20IA",
+                    closing: "Empresas como la tuya han logrado transformaciones increíbles.",
+                    percentage: percentage
+                };
+
+                if (finalScore >= Math.round(maxPossibleScore * 0.85)) {
+                    message = {
+                        level: "Preparación Completa - Listo para Implementar",
+                        title: "¡FELICIDADES! TU EMPRESA ESTÁ COMPLETAMENTE PREPARADA",
+                        diagnosis: "Resultado excepcional. Tu empresa tiene todos los elementos necesarios para una implementación exitosa de IA.",
+                        meaning: [
+                            "Puedes empezar implementación IA inmediatamente",
+                            "Tienes alta probabilidad de éxito y ROI rápido",
+                            "Eres candidato ideal para transformación integral"
+                        ],
+                        nextStep: "CONSULTORÍA INTEGRAL personalizada. Te acompañamos en todo el proceso de implementación.",
+                        ctaButtonText: "INICIAR CONSULTORÍA INTEGRAL AHORA",
+                        ctaButtonColor: "bg-yellow-500 hover:bg-yellow-600",
+                        ctaButtonLink: "mailto:daniel@danvilx.com?subject=Solicitud%20Consultoría%20Integral%20IA",
+                        closing: "Con tu nivel de preparación, podrías estar viendo resultados transformadores en 60-90 días.",
+                        percentage: percentage
+                    };
+                } else if (finalScore >= Math.round(maxPossibleScore * 0.65)) {
+                    message = {
+                        level: "Preparación Avanzada - Casi Listo",
+                        title: "¡IMPRESIONANTE! ESTÁS CASI LISTO",
+                        diagnosis: "Tu empresa demuestra preparación avanzada para IA. Solo necesitas algunos ajustes finos.",
+                        meaning: [
+                            "Tu infraestructura está muy bien preparada",
+                            "Puedes empezar implementación IA en corto plazo",
+                            "Eres candidato perfecto para soluciones personalizadas"
+                        ],
+                        nextStep: "Una AUDITORÍA IA EMPRESARIAL completa donde identificaremos oportunidades específicas.",
+                        ctaButtonText: "SOLICITAR AUDITORÍA IA AHORA",
+                        ctaButtonColor: "bg-orange-500 hover:bg-orange-600",
+                        ctaButtonLink: "mailto:daniel@danvilx.com?subject=Solicitud%20Auditoría%20IA%20Empresarial",
+                        closing: "Empresas con tu nivel suelen lograr ROI positivo en los primeros 90 días.",
+                        percentage: percentage
+                    };
+                } else if (finalScore >= Math.round(maxPossibleScore * 0.35)) {
+                    message = {
+                        level: "Preparación Media - Bases Sólidas",
+                        title: "¡EXCELENTE! TIENES BASES SÓLIDAS",
+                        diagnosis: "Tu empresa muestra preparación media-alta para IA. Tienes fundamentos importantes establecidos.",
+                        meaning: [
+                            "Tus bases tecnológicas son prometedoras",
+                            "Con algunos ajustes estratégicos, estarás listo para IA",
+                            "Eres candidato ideal para implementación por fases"
+                        ],
+                        nextStep: "Un TALLER EJECUTIVO personalizado para tu equipo directivo. En 4 horas, dominarás las herramientas IA esenciales.",
+                        ctaButtonText: "COTIZAR TALLER EJECUTIVO AHORA",
+                        ctaButtonColor: "bg-blue-500 hover:bg-blue-600",
+                        ctaButtonLink: "mailto:daniel@danvilx.com?subject=Cotización%20Taller%20Ejecutivo%20IA",
+                        closing: "Empresas con tu nivel típicamente ven resultados en 30-60 días.",
+                        percentage: percentage
+                    };
+                }
+
+                return message;
+            };
+
+            if (quizCompleted) {
+                const personalizedMessage = getPersonalizedMessage(score);
+                const currentDate = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+
+                return (
+                    <div className="min-h-screen flex items-center justify-center p-4">
+                        <div className="quiz-container">
+                            {/* Logo Danvilx */}
+                            <div className="logo-container">
+                                <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ margin: '0 auto 1rem' }}>
+                                    {/* Cerebro principal */}
+                                    <path d="M20 30 L80 30 L100 50 L100 80 L85 95 L35 95 L20 80 Z" 
+                                          fill="none" 
+                                          stroke="#F97316" 
+                                          strokeWidth="3" 
+                                          strokeLinecap="round" 
+                                          strokeLinejoin="round"/>
+                                    
+                                    {/* Circuitos internos */}
+                                    <circle cx="30" cy="40" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                    <circle cx="50" cy="40" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                    <circle cx="70" cy="40" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                    
+                                    <circle cx="25" cy="55" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                    <circle cx="45" cy="55" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                    <circle cx="65" cy="55" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                    <circle cx="85" cy="55" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                    
+                                    <circle cx="35" cy="70" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                    <circle cx="55" cy="70" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                    <circle cx="75" cy="70" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                    
+                                    {/* Conexiones */}
+                                    <path d="M30 43 L25 52" stroke="#F97316" strokeWidth="2"/>
+                                    <path d="M50 43 L45 52" stroke="#F97316" strokeWidth="2"/>
+                                    <path d="M70 43 L65 52" stroke="#F97316" strokeWidth="2"/>
+                                    <path d="M45 58 L35 67" stroke="#F97316" strokeWidth="2"/>
+                                    <path d="M65 58 L75 67" stroke="#F97316" strokeWidth="2"/>
+                                    
+                                    {/* Líneas del procesador en la parte inferior */}
+                                    <path d="M35 85 L75 85" stroke="#F97316" strokeWidth="3" strokeLinecap="round"/>
+                                    <path d="M40 90 L70 90" stroke="#F97316" strokeWidth="2" strokeLinecap="round"/>
+                                    <path d="M45 88 L65 88" stroke="#F97316" strokeWidth="2" strokeLinecap="round"/>
+                                </svg>
+                                <div className="logo-text">DANVILX</div>
+                                <div className="logo-subtitle">CONSULTING GROUP</div>
+                            </div>
+
+                            <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">INTERPRETACIÓN DE RESULTADOS</h2>
+                            <p className="text-xl font-semibold text-gray-700 mb-2 text-center">
+                                TU PUNTUACIÓN: {score}/{quizData.questions.length * 3} puntos ({personalizedMessage.percentage}% de preparación)
+                            </p>
+                            <p className="text-xl font-semibold text-gray-700 mb-2 text-center">NIVEL: {personalizedMessage.level}</p>
+                            <p className="text-md text-gray-600 mb-6 text-center">FECHA DE EVALUACIÓN: {currentDate}</p>
+
+                            <div className="progress-bar-container mb-8">
+                                <div 
+                                    className="progress-bar"
+                                    style={{
+                                        width: `${personalizedMessage.percentage}%`,
+                                        backgroundColor: personalizedMessage.percentage >= 85 ? '#fbbf24' :
+                                                        personalizedMessage.percentage >= 65 ? '#f97316' :
+                                                        personalizedMessage.percentage >= 35 ? '#3b82f6' : '#10b981'
+                                    }}
+                                ></div>
+                            </div>
+
+                            <div className={`p-4 rounded-lg mb-8 text-left ${
+                                personalizedMessage.ctaButtonColor.includes('green') ? 'bg-green-50 border-l-4 border-green-500 text-green-800' :
+                                personalizedMessage.ctaButtonColor.includes('blue') ? 'bg-blue-50 border-l-4 border-blue-500 text-blue-800' :
+                                personalizedMessage.ctaButtonColor.includes('orange') ? 'bg-orange-50 border-l-4 border-orange-500 text-orange-800' :
+                                'bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800'
+                            }`}>
+                                <h3 className="text-2xl font-bold mb-2">{personalizedMessage.title}</h3>
+                                <p className="mb-4">{personalizedMessage.diagnosis}</p>
+                                <h4 className="font-semibold mb-2">✨ LO QUE ESTO SIGNIFICA:</h4>
+                                <ul className="list-disc list-inside mb-4 space-y-1">
+                                    {personalizedMessage.meaning.map((item, index) => (
+                                        <li key={index}>{item}</li>
+                                    ))}
+                                </ul>
+                                <h4 className="font-semibold mb-2">🎯 TU PRÓXIMO PASO RECOMENDADO:</h4>
+                                <p className="mb-4">{personalizedMessage.nextStep}</p>
+                                <div className="text-center">
+                                    <a href={personalizedMessage.ctaButtonLink} className={`btn ${personalizedMessage.ctaButtonColor}`}>
+                                        {personalizedMessage.ctaButtonText}
+                                    </a>
+                                </div>
+                                <p className="mt-4 text-center italic">{personalizedMessage.closing}</p>
+                            </div>
+
+                            <div className="mt-10 p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
+                                <h3 className="text-xl font-bold text-gray-800 mb-4">📞 ¿PREFIERES HABLAR DIRECTAMENTE?</h3>
+                                <p className="text-gray-700 mb-2">Llama ahora: <span className="font-semibold">811 212 4491</span></p>
+                                <p className="text-gray-700 mb-4">Email: <a href="mailto:daniel@danvilx.com" className="text-blue-600 hover:underline">daniel@danvilx.com</a></p>
+                                <h3 className="text-xl font-bold text-gray-800 mb-4">🎯 GARANTÍA DANVILX:</h3>
+                                <p className="text-gray-700 mb-4">Más de 800 ejecutivos mexicanos han transformado sus empresas con nuestro acompañamiento.</p>
+                                <p className="italic text-gray-600">"No solo implementamos IA, creamos ventajas competitivas sostenibles."</p>
+                                <p className="font-semibold text-gray-700 mt-2">- Daniel Villarreal, CEO Danvilx AI Consulting Group</p>
+                            </div>
+
+                            <button
+                                onClick={() => {
+                                    setCurrentQuestionIndex(0);
+                                    setScore(0);
+                                    setQuizCompleted(false);
+                                    setShowRationale(false);
+                                    setSelectedAnswerIndex(null);
+                                }}
+                                className="btn btn-secondary mt-8 w-full"
+                            >
+                                Reiniciar Checklist
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen flex items-center justify-center p-4">
+                    <div className="quiz-container">
+                        {/* Logo Danvilx */}
+                        <div className="logo-container">
+                            <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ margin: '0 auto 1rem' }}>
+                                {/* Cerebro principal */}
+                                <path d="M20 30 L80 30 L100 50 L100 80 L85 95 L35 95 L20 80 Z" 
+                                      fill="none" 
+                                      stroke="#F97316" 
+                                      strokeWidth="3" 
+                                      strokeLinecap="round" 
+                                      strokeLinejoin="round"/>
+                                
+                                {/* Circuitos internos */}
+                                <circle cx="30" cy="40" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                <circle cx="50" cy="40" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                <circle cx="70" cy="40" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                
+                                <circle cx="25" cy="55" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                <circle cx="45" cy="55" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                <circle cx="65" cy="55" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                <circle cx="85" cy="55" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                
+                                <circle cx="35" cy="70" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                <circle cx="55" cy="70" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                <circle cx="75" cy="70" r="3" fill="none" stroke="#F97316" strokeWidth="2"/>
+                                
+                                {/* Conexiones */}
+                                <path d="M30 43 L25 52" stroke="#F97316" strokeWidth="2"/>
+                                <path d="M50 43 L45 52" stroke="#F97316" strokeWidth="2"/>
+                                <path d="M70 43 L65 52" stroke="#F97316" strokeWidth="2"/>
+                                <path d="M45 58 L35 67" stroke="#F97316" strokeWidth="2"/>
+                                <path d="M65 58 L75 67" stroke="#F97316" strokeWidth="2"/>
+                                
+                                {/* Líneas del procesador en la parte inferior */}
+                                <path d="M35 85 L75 85" stroke="#F97316" strokeWidth="3" strokeLinecap="round"/>
+                                <path d="M40 90 L70 90" stroke="#F97316" strokeWidth="2" strokeLinecap="round"/>
+                                <path d="M45 88 L65 88" stroke="#F97316" strokeWidth="2" strokeLinecap="round"/>
+                            </svg>
+                            <div className="logo-text">DANVILX</div>
+                            <div className="logo-subtitle">CONSULTING GROUP</div>
+                        </div>
+
+                        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
+                            CHECKLIST: ¿TU EMPRESA ESTÁ LISTA PARA LA INTELIGENCIA ARTIFICIAL?
+                        </h1>
+                        <p className="text-center text-gray-600 mb-8">
+                            Evaluación empresarial creada por <strong>Danvilx AI Consulting Group</strong><br/>
+                            Basado en la experiencia de implementar IA en 50+ empresas mexicanas
+                        </p>
+
+                        <div className="text-lg font-semibold text-gray-700 mb-4">
+                            Pregunta {currentQuestionIndex + 1} de {quizData.questions.length}
+                        </div>
+                        
+                        <h2 className="text-2xl font-bold text-gray-900 mb-6">{currentQuestion.question}</h2>
+                        
+                        <p className="text-sm text-gray-500 mb-6 italic">💡 Pista: {currentQuestion.hint}</p>
+
+                        <div className="space-y-4 mb-6">
+                            {currentQuestion.answerOptions.map((option, index) => (
+                                <div
+                                    key={index}
+                                    className={`answer-option ${
+                                        selectedAnswerIndex === index ? 'selected' : ''
+                                    } ${
+                                        showRationale && option.points === 3 ? 'correct' : ''
+                                    } ${
+                                        showRationale && selectedAnswerIndex === index && option.points === 2 ? 'partial' : ''
+                                    } ${
+                                        showRationale && selectedAnswerIndex === index && option.points === 1 ? 'partial' : ''
+                                    } ${
+                                        showRationale && selectedAnswerIndex === index && option.points === 0 ? 'incorrect' : ''
+                                    }`}
+                                    onClick={() => handleAnswerClick(index, option.points)}
+                                >
+                                    <p className="font-medium text-gray-800">{option.text}</p>
+                                    {showRationale && (
+                                        <p className="rationale">{option.rationale}</p>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+
+                        {showRationale && (
+                            <div className="flex justify-end">
+                                <button onClick={handleNextQuestion} className="btn btn-primary">
+                                    {currentQuestionIndex < quizData.questions.length - 1 ? 'Siguiente Pregunta' : 'Ver Resultados'}
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
